@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>popup</title>
+  <link rel="stylesheet" href="slick/slick.css">
+  <link rel="stylesheet" href="slick/slick-theme.css">
+  <style type="text/css">
+      /*это стили слайдера*/
+      html, body {
+          margin: 0;
+          padding: 0;
+      }
+      * {
+          box-sizing: border-box;
+      }
+      .slider {
+          width: 50%;
+          margin: 100px auto;
+      }
+      .slick-slide {
+          margin: 0 20px;
+      }
+      .slick-slide img {
+          width: 100%;
+          height: 250px
+      }
+      .slick-prev:before,
+      .slick-next:before {
+          color: black;
+      }
+      .slick-slide {
+          transition: all ease-in-out .3s;
+          opacity: .2;
+      }
+      .slick-active {
+          opacity: .5;
+      }
+      .slick-current {
+          opacity: 1;
+      }
+      /*это стили попапа*/
+      .modal{
+          display: none;
+          position: fixed;
+          z-index: 1;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0,0,0,0.7);
+      }
+      .modal-content{
+          /*background-color: #fefefe;*/
+          margin: 7% auto;
+          /*padding: 20px;*/
+          /*border: 1px solid #888;*/
+          width: 57%;      }
+      .close{
+          color: #aaa;
+          float: right;
+          font-size: 60px;
+          font-weight: bold;
+          cursor: pointer;
+      }
+      .imgPopup {
+          width: 500px;
+          height: 600px;
+          display: block;
+          margin: 0 auto;
+        }
+  </style>
+</head>
+<body>
+<div class="my-new-slider" id="slide"></div>
+<div id="myModal" class="modal">
+  <div id="contentModal" class="modal-content">
+    <span class="close">&times;</span>
+  </div>
+</div>
+
+
+<script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="slick/slick.js"></script>
+<script src="slick/slick.min.js"></script>
+<script>
+let images =  [
+  'https://kultur-a.com/uploads/fotos/551b1d925d4c4-c95578c55d6c219ba82ff55c2233b794.jpg',
+  'https://cdn-s-static.arzamas.academy/uploads/ckeditor/pictures/7219/content_englishman.jpg',
+  'https://www.marc-chagall.ru/images/236.jpg',
+  'https://allpainters.ru/wp-content/uploads/paintings/spring-1938.jpg',
+  'https://olga-dubova.ru/wp-content/uploads/2020/02/657740cacfe0ef0242c64adaec06a9a2.jpg',
+  'https://antikminsk.by/assets/images/products/650/497-0.jpg',
+  'https://i.pinimg.com/originals/fd/82/aa/fd82aa276e3195e6a189f881e3f5415b.jpg',
+  'https://loevenbruck.com/upload/document/B_20180727110701_03rc72dpi.jpg',
+  'http://www.artnet.com/WebServices/images/ll00146lldk6QJFg1zSF3CfDrCWvaHBOcjNDF/key-hiraga-work.jpg',
+  'https://i.pinimg.com/originals/9f/2f/ba/9f2fba9661b118e3442cec5dd80ec93c.jpg',
+  'https://img.over-blog-kiwi.com/0/93/16/08/20170605/ob_0ea69c_img-3840.jpg',
+  'http://www.artnet.com/WebServices/images/ll02415lldTZ0GFgMNECfDrCWvaHBOcVGmD/key-hiraga-untitled.jpg',
+  'https://medias.slash-paris.com/main_images/images/000/009/937/loevenbruck%2028%2004%2017105719%20rc_large.jpg?1496221479',
+  'https://cdn-s-static.arzamas.academy/storage/picture/3109/gallery_picture-516f99c5-030f-4f0e-8ea5-8bffff428db3.jpg'
+]
+
+// тут цепляюсь за id дива слайдера
+let imgSlide = document.getElementById('slide');
+// цеплюсь да id дива в который нужно поместить див
+
+
+// создаю внутри блока секцию для слайдера
+let section = document.createElement('section');
+// присваиваю секции class
+section.className = "pasif slider";
+
+for (let index = 0; index < images.length; index++ ) {
+  // создаю img
+  let img = document.createElement('img');
+  // встовляю в src ссылку на картинку
+  img.src = images[index];
+  // добовляю артибут alt
+  img.alt = '';
+
+  // создаю div
+  let div = document.createElement('div');
+  div.onclick = function() {
+    getImage(index)
+  }
+  // // ставлю картинку в div
+  div.appendChild(img);
+
+  // // вставляю div во внутрь секции
+  section.appendChild(div);
+}
+
+
+let modal = document.getElementById('myModal');
+let span = document.getElementsByClassName("close")[0];
+// закрытие окна на 'х'
+span.onclick = function () {
+  modal.style.display = "none";
+  // цепляюсь за блок в попапе
+  let popupImg = document.getElementById('popupImg');
+  popupImg.remove()
+}
+
+// в этой функции открываю попап/цепляюсь за блок где будет картинка/создаю значения картинке/добавяю картинку в тег/
+const getImage = (index) => {
+  // // это передать в попап
+  // console.log(index)
+  // console.log(images[index])
+  // открываю попап
+  modal.style.display = "block";
+  // цепляюсь за блок в попапе
+  let modalCont = document.getElementById('contentModal');
+  // создаю тег для картинки img
+  let img = document.createElement('img');
+  img.id = 'popupImg'
+  // встовляю в src ссылку на картинку
+  img.src = images[index];
+  // добовляю артибут alt
+  img.alt = '';
+  img.className ='imgPopup';
+  // вставляю img  в блок
+  modalCont.appendChild(img);
+}
+
+// // вставляю секцию в главный блок
+imgSlide.appendChild(section);
+
+// это для работы слайдера
+$(".pasif").slick({
+  dots: true,
+  infinite: true,
+  slidesToShow: 3,
+  slidesToScroll: 1
+});
+</script>
+</body>
+</html>
